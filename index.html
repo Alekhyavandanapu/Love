@@ -23,7 +23,7 @@ body {
 
 /* 💖 Heading */
 h1 {
-    font-size: 6vw; /* responsive font */
+    font-size: 6vw; /* responsive */
     color: white;
     z-index: 3;
 }
@@ -39,8 +39,8 @@ h1 {
 
 /* Buttons */
 button {
-    padding: 3vw 6vw; /* responsive padding */
-    font-size: 4vw; /* responsive font */
+    padding: 3vw 6vw; /* responsive */
+    font-size: 4vw; /* responsive */
     border: none;
     border-radius: 12px;
     cursor: pointer;
@@ -143,16 +143,32 @@ const yesBtn = document.getElementById("yesBtn");
 const message = document.getElementById("message");
 const container = document.querySelector(".buttons");
 
-// 😈 NO button escape (adapted for mobile)
+// 😈 NO button escape (desktop + mobile, never overlaps YES)
 function moveNoBtn() {
     const c = container.getBoundingClientRect();
     const b = noBtn.getBoundingClientRect();
+    const yesB = yesBtn.getBoundingClientRect();
 
-    noBtn.style.left = Math.random() * (c.width - b.width) + "px";
-    noBtn.style.top = Math.random() * (c.height - b.height) + "px";
+    let x, y;
+    let tries = 0;
+
+    do {
+        x = Math.random() * (c.width - b.width);
+        y = Math.random() * (c.height - b.height);
+        tries++;
+        if (tries > 50) break; // failsafe
+    } while (
+        x + b.width > yesB.left &&
+        x < yesB.right &&
+        y + b.height > yesB.top &&
+        y < yesB.bottom
+    );
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 }
 
-// Use mouseenter for desktop & touchstart for mobile
+// Desktop + mobile support
 noBtn.addEventListener("mouseenter", moveNoBtn);
 noBtn.addEventListener("touchstart", moveNoBtn);
 
@@ -175,7 +191,7 @@ yesBtn.addEventListener("click", () => {
 
 // ❤️ Heart rain
 function startHearts() {
-    const hearts = ["🤍", "💖", "💕", "💘"];
+    const hearts = ["🤍", "💖", "💕", "💘","😘"];
     setInterval(() => {
         const h = document.createElement("div");
         h.className = "heart";
