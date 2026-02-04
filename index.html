@@ -166,24 +166,36 @@
     const message = document.getElementById("message");
     const container = document.querySelector(".buttons");
 
-    // 😈 NO button escape
-    noBtn.addEventListener("mouseenter", () => {
+    // Function to move the No button randomly but avoid overlapping Yes button
+    function moveNoButton() {
         const c = container.getBoundingClientRect();
         const b = noBtn.getBoundingClientRect();
         const yes = yesBtn.getBoundingClientRect();
 
         let newLeft, newTop;
+        let attempts = 0;
+
         do {
             newLeft = Math.random() * (c.width - b.width);
             newTop = Math.random() * (c.height - b.height);
+            attempts++;
         } while (
-            newLeft < yes.width && newTop < yes.height // simple overlap check
+            // simple overlap check: no overlap with Yes button
+            !(newLeft + b.width < yes.left - c.left || newLeft > yes.right - c.left || 
+              newTop + b.height < yes.top - c.top || newTop > yes.bottom - c.top) 
+              && attempts < 100
         );
 
         noBtn.style.position = "absolute";
         noBtn.style.left = newLeft + "px";
         noBtn.style.top = newTop + "px";
-    });
+    }
+
+    // Desktop hover
+    noBtn.addEventListener("mouseenter", moveNoButton);
+
+    // Mobile touch
+    noBtn.addEventListener("touchstart", moveNoButton);
 
     // 💖 YES click
     yesBtn.addEventListener("click", () => {
