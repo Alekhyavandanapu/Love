@@ -6,112 +6,149 @@
 <title>Be My Valentine ❤️</title>
 
 <style>
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: black;
-    height: 100vh;
-    overflow: hidden;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transition: background 1.2s ease;
-}
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: black;
+        height: 100vh;
+        overflow: hidden;
+        text-align: center;
 
-h1 {
-    font-size: 6vw;
-    color: white;
-    z-index: 3;
-}
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        transition: background 1.2s ease;
+    }
 
-.buttons {
-    margin-top: 5vw;
-    position: relative;
-    width: 90%;
-    height: 150px;
-    z-index: 3;
-}
+    h1 {
+        font-size: 2.2rem;
+        color: white;
+        z-index: 3;
+        padding: 0 10px;
+    }
 
-button {
-    padding: 3vw 6vw;
-    font-size: 4vw;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    position: absolute;
-}
+    .buttons {
+        margin-top: 40px;
+        position: relative;
+        width: 90%;
+        max-width: 500px;
+        height: 120px;
+        z-index: 3;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
 
-#yesBtn {
-    background-color: #ff2d55;
-    color: white;
-    left: 35%;
-    top: 30%;
-}
+    button {
+        padding: 12px 28px;
+        font-size: 18px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        min-width: 100px;
+        transition: all 0.3s ease;
+    }
 
-#noBtn {
-    background-color: white;
-    color: #ff2d55;
-    left: 0;
-    top: 0;
-}
+    #yesBtn {
+        background-color: #ff2d55;
+        color: white;
+    }
 
-#message {
-    margin-top: 5vw;
-    color: white;
-    display: none;
-    z-index: 3;
-}
+    #noBtn {
+        background-color: white;
+        color: #ff2d55;
+    }
 
-.big-love {
-    font-size: 7vw;
-    font-weight: bold;
-    margin-bottom: 1vw;
-}
+    /* 💌 Message styles */
+    #message {
+        margin-top: 30px;
+        color: white;
+        display: none;
+        z-index: 3;
+    }
 
-.small-warning {
-    font-size: 4vw;
-    opacity: 0.9;
-}
+    .big-love {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
 
-/* Hearts */
-.heart {
-    position: fixed;
-    top: -30px;
-    z-index: 1;
-    opacity: 0.85;
-    animation: fall linear forwards;
-    filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
-}
+    .small-warning {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
 
-/* Sparkles */
-.sparkle {
-    position: fixed;
-    top: -20px;
-    z-index: 1;
-    color: gold;
-    animation: sparkleFall linear forwards;
-    filter: drop-shadow(0 0 6px rgba(255,215,0,0.9));
-}
+    /* ❤️ Hearts */
+    .heart {
+        position: fixed;
+        top: -30px;
+        z-index: 1;
+        opacity: 0.85;
+        animation: fall linear forwards;
+        filter: drop-shadow(0 0 6px rgba(255,255,255,0.6));
+    }
 
-/* Confetti */
-.confetti {
-    position: fixed;
-    width: 4vw;
-    height: 5vw;
-    opacity: 0.9;
-    z-index: 2;
-    animation: confettiFall linear forwards;
-}
+    /* ✨ Sparkles */
+    .sparkle {
+        position: fixed;
+        top: -20px;
+        z-index: 1;
+        color: gold;
+        animation: sparkleFall linear forwards;
+        filter: drop-shadow(0 0 8px rgba(255,215,0,0.9));
+    }
 
-@keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
-@keyframes sparkleFall { to { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; } }
-@keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+    /* 🎉 Confetti */
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 14px;
+        opacity: 0.9;
+        z-index: 2;
+        animation: confettiFall linear forwards;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(110vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    @keyframes sparkleFall {
+        to {
+            transform: translateY(110vh) rotate(720deg) scale(0.5);
+            opacity: 0;
+        }
+    }
+
+    @keyframes confettiFall {
+        to {
+            transform: translateY(110vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 500px) {
+        .buttons {
+            flex-direction: column;
+            height: auto;
+            gap: 20px;
+        }
+
+        button {
+            width: 60%;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+    }
 </style>
 </head>
-
 <body>
 
 <h1>💖 Will You Be My Valentine? 💖</h1>
@@ -124,112 +161,96 @@ button {
 <div id="message"></div>
 
 <script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const message = document.getElementById("message");
-const container = document.querySelector(".buttons");
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const message = document.getElementById("message");
+    const container = document.querySelector(".buttons");
 
-// Function to check overlap between two rectangles
-function isOverlapping(rect1, rect2) {
-    return !(
-        rect1.right < rect2.left ||
-        rect1.left > rect2.right ||
-        rect1.bottom < rect2.top ||
-        rect1.top > rect2.bottom
-    );
-}
+    // 😈 NO button escape
+    noBtn.addEventListener("mouseenter", () => {
+        const c = container.getBoundingClientRect();
+        const b = noBtn.getBoundingClientRect();
+        const yes = yesBtn.getBoundingClientRect();
 
-// Function to place NO button randomly without overlapping YES
-function placeNoButton() {
-    const c = container.getBoundingClientRect();
-    const b = noBtn.getBoundingClientRect();
-    const yesB = yesBtn.getBoundingClientRect();
+        let newLeft, newTop;
+        do {
+            newLeft = Math.random() * (c.width - b.width);
+            newTop = Math.random() * (c.height - b.height);
+        } while (
+            newLeft < yes.width && newTop < yes.height // simple overlap check
+        );
 
-    let x, y, tries = 0;
-    do {
-        x = Math.random() * (c.width - b.width);
-        y = Math.random() * (c.height - b.height);
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
-        const noRect = noBtn.getBoundingClientRect();
-        tries++;
-        if (tries > 50) break; // failsafe
-    } while (isOverlapping(noRect, yesB));
-}
+        noBtn.style.position = "absolute";
+        noBtn.style.left = newLeft + "px";
+        noBtn.style.top = newTop + "px";
+    });
 
-// Initial NO button placement
-placeNoButton();
+    // 💖 YES click
+    yesBtn.addEventListener("click", () => {
+        document.body.style.background =
+            "linear-gradient(135deg, #7a0000, #ff2d55)";
 
-// NO button escape
-function moveNoBtn() {
-    placeNoButton();
-}
+        message.style.display = "block";
+        message.innerHTML = `
+            <div class="big-love">Yayyyy ❤️😘 I love you forever!</div>
+            <div class="small-warning">
+                Don’t even try clicking NO… you’re stuck with me forever 😈❤️
+            </div>
+        `;
 
-// Desktop + mobile support
-noBtn.addEventListener("mouseenter", moveNoBtn);
-noBtn.addEventListener("touchstart", moveNoBtn);
+        startHearts();
+        startSparkles();
+        confettiExplosion();
+    });
 
-// YES click
-yesBtn.addEventListener("click", () => {
-    document.body.style.background = "linear-gradient(135deg, #7a0000, #ff2d55)";
-
-    message.style.display = "block";
-    message.innerHTML = `
-        <div class="big-love">Yayyyy ❤️😘 I love you forever!</div>
-        <div class="small-warning">
-            Don't even try clicking NO… you're stuck with me forever 😈❤️
-        </div>
-    `;
-
-    startHearts();
-    startSparkles();
-    confettiExplosion();
-});
-
-// Hearts
-function startHearts() {
-    const hearts = ["🤍","💖","💕","💘"];
-    setInterval(() => {
-        const h = document.createElement("div");
-        h.className = "heart";
-        h.innerHTML = hearts[Math.floor(Math.random()*hearts.length)];
-        h.style.left = Math.random() * window.innerWidth + "px";
-        h.style.fontSize = (6 + Math.random()*8) + "vw";
-        h.style.animationDuration = (3 + Math.random()*3) + "s";
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(),6000);
-    },180);
-}
-
-// Sparkles
-function startSparkles() {
-    const sparkles = ["✨","⭐","✦"];
-    setInterval(() => {
-        const s = document.createElement("div");
-        s.className = "sparkle";
-        s.innerHTML = sparkles[Math.floor(Math.random()*sparkles.length)];
-        s.style.left = Math.random() * window.innerWidth + "px";
-        s.style.fontSize = (3 + Math.random()*4) + "vw";
-        s.style.animationDuration = (2.5 + Math.random()*3) + "s";
-        document.body.appendChild(s);
-        setTimeout(()=>s.remove(),6000);
-    },250);
-}
-
-// Confetti explosion
-function confettiExplosion() {
-    const colors = ["#ff2d55","#ffd700","#ffffff","#ff69b4"];
-    for (let i=0;i<120;i++){
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-        confetti.style.left = Math.random()*window.innerWidth + "px";
-        confetti.style.top = "-20px";
-        confetti.style.animationDuration = (3 + Math.random()*3) + "s";
-        document.body.appendChild(confetti);
-        setTimeout(()=>confetti.remove(),6000);
+    // ❤️ Heart rain
+    function startHearts() {
+        const hearts = ["🤍", "💖", "💕", "💘"];
+        setInterval(() => {
+            const h = document.createElement("div");
+            h.className = "heart";
+            h.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            h.style.left = Math.random() * window.innerWidth + "px";
+            h.style.fontSize = (18 + Math.random() * 22) + "px";
+            h.style.animationDuration = (3 + Math.random() * 3) + "s";
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 6000);
+        }, 180);
     }
-}
+
+    // ✨ Sparkles
+    function startSparkles() {
+        const sparkles = ["✨", "⭐", "✦"];
+        setInterval(() => {
+            const s = document.createElement("div");
+            s.className = "sparkle";
+            s.innerHTML = sparkles[Math.floor(Math.random() * sparkles.length)];
+            s.style.left = Math.random() * window.innerWidth + "px";
+            s.style.fontSize = (10 + Math.random() * 14) + "px";
+            s.style.animationDuration = (2.5 + Math.random() * 3) + "s";
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 6000);
+        }, 250);
+    }
+
+    // 🎉 Confetti explosion (one-time)
+    function confettiExplosion() {
+        const colors = ["#ff2d55", "#ffd700", "#ffffff", "#ff69b4"];
+
+        for (let i = 0; i < 120; i++) {
+            const confetti = document.createElement("div");
+            confetti.className = "confetti";
+            confetti.style.backgroundColor =
+                colors[Math.floor(Math.random() * colors.length)];
+
+            confetti.style.left = Math.random() * window.innerWidth + "px";
+            confetti.style.top = "-20px";
+            confetti.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 6000);
+        }
+    }
 </script>
 
 </body>
