@@ -21,14 +21,12 @@ body {
     transition: background 1.2s ease;
 }
 
-/* 💖 Heading */
 h1 {
-    font-size: 6vw; /* responsive */
+    font-size: 6vw;
     color: white;
     z-index: 3;
 }
 
-/* Buttons container */
 .buttons {
     margin-top: 5vw;
     position: relative;
@@ -37,17 +35,15 @@ h1 {
     z-index: 3;
 }
 
-/* Buttons */
 button {
-    padding: 3vw 6vw; /* responsive */
-    font-size: 4vw; /* responsive */
+    padding: 3vw 6vw;
+    font-size: 4vw;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     position: absolute;
 }
 
-/* Yes button */
 #yesBtn {
     background-color: #ff2d55;
     color: white;
@@ -55,15 +51,13 @@ button {
     top: 30%;
 }
 
-/* No button */
 #noBtn {
     background-color: white;
     color: #ff2d55;
-    left: 55%;
-    top: 30%;
+    left: 0;
+    top: 0;
 }
 
-/* 💌 Message */
 #message {
     margin-top: 5vw;
     color: white;
@@ -72,17 +66,17 @@ button {
 }
 
 .big-love {
-    font-size: 7vw; /* responsive */
+    font-size: 7vw;
     font-weight: bold;
     margin-bottom: 1vw;
 }
 
 .small-warning {
-    font-size: 4vw; /* responsive */
+    font-size: 4vw;
     opacity: 0.9;
 }
 
-/* ❤️ Hearts */
+/* Hearts */
 .heart {
     position: fixed;
     top: -30px;
@@ -92,7 +86,7 @@ button {
     filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
 }
 
-/* ✨ Sparkles */
+/* Sparkles */
 .sparkle {
     position: fixed;
     top: -20px;
@@ -102,27 +96,19 @@ button {
     filter: drop-shadow(0 0 6px rgba(255,215,0,0.9));
 }
 
-/* 🎉 Confetti */
+/* Confetti */
 .confetti {
     position: fixed;
-    width: 4vw; /* responsive */
-    height: 5vw; /* responsive */
+    width: 4vw;
+    height: 5vw;
     opacity: 0.9;
     z-index: 2;
     animation: confettiFall linear forwards;
 }
 
-@keyframes fall {
-    to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-}
-
-@keyframes sparkleFall {
-    to { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
-}
-
-@keyframes confettiFall {
-    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+@keyframes sparkleFall { to { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; } }
+@keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
 </style>
 </head>
 
@@ -143,36 +129,47 @@ const yesBtn = document.getElementById("yesBtn");
 const message = document.getElementById("message");
 const container = document.querySelector(".buttons");
 
-// 😈 NO button escape (desktop + mobile, never overlaps YES)
-function moveNoBtn() {
+// Function to check overlap between two rectangles
+function isOverlapping(rect1, rect2) {
+    return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+    );
+}
+
+// Function to place NO button randomly without overlapping YES
+function placeNoButton() {
     const c = container.getBoundingClientRect();
     const b = noBtn.getBoundingClientRect();
     const yesB = yesBtn.getBoundingClientRect();
 
-    let x, y;
-    let tries = 0;
-
+    let x, y, tries = 0;
     do {
         x = Math.random() * (c.width - b.width);
         y = Math.random() * (c.height - b.height);
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+        const noRect = noBtn.getBoundingClientRect();
         tries++;
         if (tries > 50) break; // failsafe
-    } while (
-        x + b.width > yesB.left &&
-        x < yesB.right &&
-        y + b.height > yesB.top &&
-        y < yesB.bottom
-    );
+    } while (isOverlapping(noRect, yesB));
+}
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+// Initial NO button placement
+placeNoButton();
+
+// NO button escape
+function moveNoBtn() {
+    placeNoButton();
 }
 
 // Desktop + mobile support
 noBtn.addEventListener("mouseenter", moveNoBtn);
 noBtn.addEventListener("touchstart", moveNoBtn);
 
-// 💖 YES click
+// YES click
 yesBtn.addEventListener("click", () => {
     document.body.style.background = "linear-gradient(135deg, #7a0000, #ff2d55)";
 
@@ -189,51 +186,48 @@ yesBtn.addEventListener("click", () => {
     confettiExplosion();
 });
 
-// ❤️ Heart rain
+// Hearts
 function startHearts() {
-    const hearts = ["🤍", "💖", "💕", "💘","😘"];
+    const hearts = ["🤍","💖","💕","💘"];
     setInterval(() => {
         const h = document.createElement("div");
         h.className = "heart";
-        h.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+        h.innerHTML = hearts[Math.floor(Math.random()*hearts.length)];
         h.style.left = Math.random() * window.innerWidth + "px";
-        h.style.fontSize = (6 + Math.random() * 8) + "vw"; // responsive
-        h.style.animationDuration = (3 + Math.random() * 3) + "s";
+        h.style.fontSize = (6 + Math.random()*8) + "vw";
+        h.style.animationDuration = (3 + Math.random()*3) + "s";
         document.body.appendChild(h);
-        setTimeout(() => h.remove(), 6000);
-    }, 180);
+        setTimeout(()=>h.remove(),6000);
+    },180);
 }
 
-// ✨ Sparkles
+// Sparkles
 function startSparkles() {
-    const sparkles = ["✨", "⭐", "✦"];
+    const sparkles = ["✨","⭐","✦"];
     setInterval(() => {
         const s = document.createElement("div");
         s.className = "sparkle";
-        s.innerHTML = sparkles[Math.floor(Math.random() * sparkles.length)];
+        s.innerHTML = sparkles[Math.floor(Math.random()*sparkles.length)];
         s.style.left = Math.random() * window.innerWidth + "px";
-        s.style.fontSize = (3 + Math.random() * 4) + "vw"; // responsive
-        s.style.animationDuration = (2.5 + Math.random() * 3) + "s";
+        s.style.fontSize = (3 + Math.random()*4) + "vw";
+        s.style.animationDuration = (2.5 + Math.random()*3) + "s";
         document.body.appendChild(s);
-        setTimeout(() => s.remove(), 6000);
-    }, 250);
+        setTimeout(()=>s.remove(),6000);
+    },250);
 }
 
-// 🎉 Confetti explosion
+// Confetti explosion
 function confettiExplosion() {
-    const colors = ["#ff2d55", "#ffd700", "#ffffff", "#ff69b4"];
-
-    for (let i = 0; i < 120; i++) {
+    const colors = ["#ff2d55","#ffd700","#ffffff","#ff69b4"];
+    for (let i=0;i<120;i++){
         const confetti = document.createElement("div");
         confetti.className = "confetti";
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
-        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        confetti.style.left = Math.random()*window.innerWidth + "px";
         confetti.style.top = "-20px";
-        confetti.style.animationDuration = (3 + Math.random() * 3) + "s";
-
+        confetti.style.animationDuration = (3 + Math.random()*3) + "s";
         document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 6000);
+        setTimeout(()=>confetti.remove(),6000);
     }
 }
 </script>
